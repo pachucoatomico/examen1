@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+
+</body>
+<div id="tablero"></div>
+<div id="mensajes"></div>
+<button onclick="reinicia()" type="button" class="btn btn-primary">⏮</button>
+<script>
+    reinicia();
+    var turno = 0;
+    function reinicia() {
+        turno = 0;
+        document.getElementById("tablero").innerHTML = "";
+        for (var i = 0; i < 25; i++) {
+            document.getElementById("tablero").innerHTML +=
+                '<button id="b' + i + '" onclick="marca(event)" type="button" class="btn btn-primary">💥</button>';
+            if ((i + 1) % 5 === 0) {
+                document.getElementById("tablero").innerHTML += "<br>";
+
+            }
+        }
+
+    }
+
+
+    function marca(e) {
+
+        var nombre = e.target.id;
+        if (turno === 0) {
+            document.getElementById(nombre).innerHTML = "❌";
+
+        }
+        else {
+            document.getElementById(nombre).innerHTML = "⭕";
+        }
+        document.getElementById(nombre).disabled = true;
+        turno = (turno + 1) % 2;
+        checa();
+    }
+    function checa() {
+        for (var jugador = 0; jugador <= 1; jugador++) {
+            var marca = "";
+            if (jugador === 0) {
+                marca = "❌";
+            }
+            else {
+                marca = "⭕";
+            }
+            for (var principio = 0; principio <= 20; principio += 5) {
+                var linea = true;
+                for (var i = principio; i < 5 + principio; i++) {
+                    var casilla = "b" + i;
+                    linea &= document.getElementById(casilla).innerHTML === marca;
+                }
+                if (linea) {
+                    document.getElementById("mensajes").innerHTML = "Godlike:" + marca;
+                    termina();
+                }
+            }
+
+            //vertical
+
+            for (var principio = 0; principio <= 4; principio++) {
+                var linea = true;
+                for (var i = principio; i < 25 + principio; i = i + 5) {
+                    var casilla = "b" + i;
+                    linea &= document.getElementById(casilla).innerHTML === marca;
+                }
+                if (linea) {
+                    document.getElementById("mensajes").innerHTML = "Te pateo el trasero:" + marca;
+                    termina();
+                }
+            }
+
+            //diagonales
+
+            for (var principio = 0; principio <= 0; principio++) {
+                var linea = true;
+                for (var i = principio; i < 25 + principio; i = i + 6) {
+                    var casilla = "b" + i;
+                    linea &= document.getElementById(casilla).innerHTML === marca;
+                }
+                if (linea) {
+                    document.getElementById("mensajes").innerHTML = "Le debes una caguama a:" + marca;
+                    termina();
+                }
+            }
+
+            for (var principio = 4; principio <= 4; principio++) {
+                var linea = true;
+                for (var i = principio; i < 20 + principio; i = i + 4) {
+                    var casilla = "b" + i;
+                    linea &= document.getElementById(casilla).innerHTML === marca;
+                }
+                if (linea) {
+                    document.getElementById("mensajes").innerHTML = "Le debes un gansito a:" + marca;
+                    termina();
+                }
+            }
+
+        }
+
+
+        /* if(
+            document.getElementById("b0").innerHTML==="❌" &&
+            document.getElementById("b1").innerHTML==="❌" &&
+            document.getElementById("b2").innerHTML==="❌" 
+           )
+          { 
+               //alert("Te ganó: ❌")
+           }
+           if(
+            document.getElementById("b3").innerHTML==="❌" &&
+            document.getElementById("b4").innerHTML==="❌" &&
+            document.getElementById("b5").innerHTML==="❌" 
+           )
+           {
+               alert("victoria para: ❌")
+           } if(
+            document.getElementById("b6").innerHTML==="❌" &&
+            document.getElementById("b7").innerHTML==="❌" &&
+            document.getElementById("b8").innerHTML==="❌" 
+           )
+           {
+               alert("God like: ❌")
+           }
+           if(
+            document.getElementById("b0").innerHTML==="❌" &&
+            document.getElementById("b4").innerHTML==="❌" &&
+            document.getElementById("b8").innerHTML==="❌" 
+           )
+           {
+               alert("❌ mola chaval")
+           }
+           if(
+            document.getElementById("b2").innerHTML==="❌" &&
+            document.getElementById("b4").innerHTML==="❌" &&
+            document.getElementById("b6").innerHTML==="❌" 
+           )
+           {
+               alert("le debes una cerveza a ❌")
+           }
+           if(
+            document.getElementById("b0").innerHTML==="❌" &&
+            document.getElementById("b3").innerHTML==="❌" &&
+            document.getElementById("b6").innerHTML==="❌" 
+           )
+           {
+               alert("❌ te pateo el trasero")
+           } if(
+            document.getElementById("b1").innerHTML==="❌" &&
+            document.getElementById("b4").innerHTML==="❌" &&
+            document.getElementById("b7").innerHTML==="❌" 
+           )
+           {
+               alert("K.O!!! ... ❌ win")
+           }
+           if(
+            document.getElementById("b2").innerHTML==="❌" &&
+            document.getElementById("b5").innerHTML==="❌" &&
+            document.getElementById("b8").innerHTML==="❌" 
+           )
+           {
+               alert("pentakill: ❌")
+           }
+              //
+    
+          /* if(
+            document.getElementById("b0").innerHTML==="⭕" &&
+            document.getElementById("b1").innerHTML==="⭕" &&
+            document.getElementById("b2").innerHTML==="⭕" 
+           )
+           {
+               alert("Gana ⭕")
+           }
+           if(
+            document.getElementById("b3").innerHTML==="⭕" &&
+            document.getElementById("b4").innerHTML==="⭕" &&
+            document.getElementById("b5").innerHTML==="⭕" 
+           )
+           {
+               alert("le debes un gansito a ⭕")
+           } if(
+            document.getElementById("b6").innerHTML==="⭕" &&
+            document.getElementById("b7").innerHTML==="⭕" &&
+            document.getElementById("b8").innerHTML==="⭕" 
+           )
+           {
+               alert("K.O!!!... ⭕ wins")
+           }
+           if(
+            document.getElementById("b0").innerHTML==="⭕" &&
+            document.getElementById("b4").innerHTML==="⭕" &&
+            document.getElementById("b8").innerHTML==="⭕" 
+           )
+           {
+               alert("Godlike ⭕")
+           }
+           if(
+            document.getElementById("b2").innerHTML==="⭕" &&
+            document.getElementById("b4").innerHTML==="⭕" &&
+            document.getElementById("b6").innerHTML==="⭕" 
+           )
+           {
+               alert("Pentakill ⭕")
+           }
+           if(
+            document.getElementById("b0").innerHTML==="⭕" &&
+            document.getElementById("b3").innerHTML==="⭕" &&
+            document.getElementById("b6").innerHTML==="⭕" 
+           )
+           {
+               alert("headshot de ⭕")
+           } if(
+            document.getElementById("b1").innerHTML==="⭕" &&
+            document.getElementById("b4").innerHTML==="⭕" &&
+            document.getElementById("b7").innerHTML==="⭕" 
+           )
+           {
+               alert("iiiii que ⭕ te ganó xdxd")
+           }
+           if(
+            document.getElementById("b2").innerHTML==="⭕" &&
+            document.getElementById("b5").innerHTML==="⭕" &&
+            document.getElementById("b8").innerHTML==="⭕" 
+           )
+           {
+               alert("Ganador: ⭕")*/
+        // termina();
+    }
+    //}
+    function termina() {
+        for (var i = 0; i < 25; i++) {
+
+            var nombre = "b" + i;
+            document.getElementById(nombre).disabled = true;
+
+        }
+    }
+</script>
+</body>
+
+</html>
